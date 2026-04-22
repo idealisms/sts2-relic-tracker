@@ -1,7 +1,7 @@
 {
   "id": "RelicTracker",
   "name": "RelicTracker",
-  "author": "VMService & Der Koch",
+  "author": "VMService & Der Koch & tonytwitch",
   "description": "A mod that exports all relics in the game to a JSON file for use in external applications.",
   "version": "v1.62",
   "has_pck": false,
