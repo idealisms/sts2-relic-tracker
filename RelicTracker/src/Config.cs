@@ -6,7 +6,7 @@ namespace RelicTracker;
 
 public class Config
 {
-    public string BackendUrl { get; set; } = "https://slay-the-relics.baalorlord.tv";
+    public string BackendUrl { get; set; } = "http://localhost:3434";
     public string Channel { get; set; } = "";
     public string AuthToken { get; set; } = "";
 
