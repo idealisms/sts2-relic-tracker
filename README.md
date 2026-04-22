@@ -78,88 +78,17 @@ Game state is POSTed to `{BackendUrl}/api/v2/game-state` as gzip-compressed JSON
   "gameStateIndex": 42,        // monotonically increasing counter, resets on new run
   "channel": "streamer",       // Twitch channel name
   "game": "sts2",
-
   "character": "The Ironclad", // display name
-  "boss": "act1bossid",        // act boss internal id (lowercase), or ""
 
   // Relics — display names in acquisition order
   "relics": ["Burning Blood", "Lantern"],
 
-  // Tooltip map for relics: display name → array of tips
+  // Tooltip map for relics: display name → array of tips (omitted if empty)
   "relicTipMap": {
     "Burning Blood": [{ "header": "Burning Blood", "description": "At the end of combat, heal 6 HP." }]
-  },
-
-  // Deck — card keys (see Card Keys below)
-  "deck": ["strike", "defend+", "bashfrost:2"],
-
-  // Per-card tooltip map: card key → array of tips
-  "cardTips": {
-    "strike": [{ "header": "Strike", "description": "Deal [D] damage." }],
-    "bashfrost:2": [
-      { "header": "Bash",  "description": "Deal [D] damage. Apply 2 Vulnerable." },
-      { "header": "Frost", "description": "...", "type": "enchantment" }
-    ]
-  },
-
-  // Potions — display name per slot, "" for empty slot
-  "potions": ["Fairy in a Bottle", "", ""],
-
-  // One tip per potion slot (mirrors potions array length)
-  "potionTips": [
-    { "header": "Fairy in a Bottle", "description": "..." },
-    { "header": "Potion Slot",       "description": "" },
-    { "header": "Potion Slot",       "description": "" }
-  ],
-
-  // Map — 2D grid of nodes indexed [row][col]
-  "mapNodes": [
-    [{ "type": "M", "parents": [] }, { "type": "*", "parents": [] }],
-    [{ "type": "R", "parents": [0] }, { "type": "$", "parents": [0] }]
-  ],
-
-  // Path taken through the map — list of [col, row] pairs
-  "mapPath": [[0, 0], [0, 1]],
-
-  // Combat-only fields (omitted when not in combat):
-
-  // Card piles — same card key format as deck
-  "drawPile":    ["strike", "defend"],
-  "discardPile": [],
-  "exhaustPile": [],
-
-  // Power/buff tooltips with hitbox positions in game screen coordinates
-  // Used to overlay tooltips on the game capture
-  "additionalTips": [
-    {
-      "tips": [{ "header": "Vulnerable", "description": "..." }],
-      "hitbox": { "x": 120.0, "y": 340.0, "w": 48.0, "h": 48.0, "z": 0.0 }
-    }
-  ],
-
-  // Unused/legacy fields kept for wire-format compatibility:
-  "relicTips":     [],
-  "baseRelicStats": {},
-  "staticTips":    [],
-  "bottles":       [-1, -1, -1],
-  "potionX":       28
+  }
 }
 ```
-
-### Card keys
-
-Cards are identified by a key that encodes variant state. Simple cards are just
-their lowercase id (with `+` for upgraded). Cards with enchantments or afflictions
-use U+001F (unit separator) as a delimiter:
-
-```
-{id}[+]{enchantmentId}:{amount}{afflictionId}
-```
-
-Examples:
-- `"strike"` — base Strike
-- `"bash+"` — upgraded Bash
-- `"bashfrost:2"` — Bash with Frost enchantment (level 2), no affliction
 
 ### Tip objects
 
@@ -168,19 +97,7 @@ Examples:
 | `header` | string | Tooltip title |
 | `description` | string | Tooltip body (may contain BBCode) |
 | `img` | string? | Asset path for card-image tips (present when `type` is `"card"`) |
-| `type` | string? | `"card"`, `"enchantment"`, or `"affliction"` — omitted for plain tips |
-
-### Map node types
-
-| Value | Meaning |
-|-------|---------|
-| `"M"` | Monster or Boss |
-| `"E"` | Elite |
-| `"$"` | Shop |
-| `"?"` | Unknown / Ancient |
-| `"R"` | Rest site |
-| `"T"` | Treasure |
-| `"*"` | Empty / unassigned |
+| `type` | string? | `"card"` — omitted for plain tips |
 
 ## Notes
 
