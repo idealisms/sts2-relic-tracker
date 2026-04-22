@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build
+        run: dotnet build RelicTracker/RelicTracker.sln -c Release
+
+      - name: Package
+        run: |
+          mkdir -p release/RelicTracker
+          cp RelicTracker/bin/Release/net9.0/RelicTracker.dll release/RelicTracker/
+          cp RelicTracker/mod_manifest.json release/RelicTracker/
+          cd release && zip -r RelicTracker.zip RelicTracker/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/RelicTracker.zip
