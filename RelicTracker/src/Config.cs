@@ -6,7 +6,7 @@ namespace RelicTracker;
 
 public class Config
 {
-    public string BackendUrl { get; set; } = "http://localhost:3434";
+    public string BackendUrl { get; set; } = "https://sts2-relic-tracker.vercel.app";
     public string Channel { get; set; } = "";
     public string AuthToken { get; set; } = "";
 
