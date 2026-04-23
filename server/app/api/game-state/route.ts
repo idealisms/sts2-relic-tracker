@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { gameStates, runs } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 interface IncomingGameState {
@@ -14,14 +15,31 @@ interface IncomingGameState {
   relicTipMap?: Record<string, { header: string; description: string; img?: string; type?: string }[]> | null;
 }
 
+function getJwtSecret() {
+  return new TextEncoder().encode(process.env.JWT_SECRET!);
+}
+
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
-  const apiKey = process.env.MOD_API_KEY;
-  if (apiKey && authHeader !== `Bearer ${apiKey}`) {
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  if (!token) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  let jwtChannel: string;
+  try {
+    const { payload } = await jwtVerify(token, getJwtSecret());
+    jwtChannel = payload.channel as string;
+  } catch {
+    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+  }
+
   const body: IncomingGameState = await req.json();
+
+  // Ensure the token's channel matches the claimed channel in the payload.
+  if (jwtChannel !== body.channel) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   const { runId, seed, gameStateIndex, channel, game, character, relics, relicTipMap } = body;
 
   await db
