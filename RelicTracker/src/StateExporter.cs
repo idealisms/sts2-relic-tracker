@@ -13,6 +13,7 @@ public class StateExporter
 {
     private readonly Config _config;
     private int _gameStateIndex;
+    private Guid _runId = Guid.NewGuid();
 
     public StateExporter(Config config)
     {
@@ -37,6 +38,8 @@ public class StateExporter
 
             var state = new ExportedState
             {
+                RunId = _runId.ToString(),
+                Seed = runState.Rng.StringSeed,
                 GameStateIndex = _gameStateIndex++,
                 Channel = _config.Channel,
                 Game = "sts2",
@@ -57,6 +60,7 @@ public class StateExporter
     public void ResetIndex()
     {
         _gameStateIndex = 0;
+        _runId = Guid.NewGuid();
     }
 
     private static string GetCharacterName(Player player)

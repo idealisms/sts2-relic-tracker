@@ -5,6 +5,12 @@ namespace RelicTracker.Models;
 
 public class ExportedState
 {
+    [JsonPropertyName("runId")]
+    public string RunId { get; set; } = "";
+
+    [JsonPropertyName("seed")]
+    public string Seed { get; set; } = "";
+
     [JsonPropertyName("gameStateIndex")]
     public int GameStateIndex { get; set; }
 
