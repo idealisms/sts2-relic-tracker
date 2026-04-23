@@ -1,15 +1,15 @@
-# Slay the Relics Exporter — Slay the Spire 2
+# Relic Tracker — Slay the Spire 2
 
-A mod that exports game state to the [Slay the Relics](https://dashboard.twitch.tv/extensions/ebkycs9lir8pbic2r0b7wa6bg6n7ua) Twitch extension, allowing viewers to see tooltips for relics, potions, cards, and more.
+A mod for Slay the Spire 2 that tracks your relics and streams live updates to an OBS browser source overlay. Run history is stored in a backend server so you can review past runs.
 
 ## Install
 
-1. Install the Twitch extension on your channel: <https://dashboard.twitch.tv/extensions/ebkycs9lir8pbic2r0b7wa6bg6n7ua>
-2. Download the latest `RelicTracker` mod release
-3. Place the mod folder in the `mods/` directory inside your STS2 install:
+1. Download the latest `RelicTracker` mod release
+2. Place the mod folder in the `mods/` directory inside your STS2 install:
    - **Windows:** `<Steam library>/steamapps/common/Slay the Spire 2/mods/`
    - **macOS:** `<Steam library>/steamapps/common/Slay the Spire 2/SlayTheSpire2.app/Contents/MacOS/mods/`
    - **Linux:** `<Steam library>/steamapps/common/Slay the Spire 2/mods/`
+3. Add the overlay as a Browser Source in OBS: `https://sts2-relic-tracker.vercel.app/overlay?channel=yourchannel`
 
 ## Building from source
 
@@ -48,9 +48,8 @@ The output DLL (`bin/Debug/net9.0/RelicTracker.dll`) and `mod_manifest.json` nee
 ## First time setup
 
 - Launch Slay the Spire 2 with mods enabled
-- The mod will automatically open your browser to authenticate with Twitch on first launch
-- After logging in, you can close the browser tab — the mod will start exporting game state automatically
-- If you previously used the STS1 mod, your credentials will be migrated automatically
+- Edit `%AppData%/RelicTracker/config.json` (Windows) or `~/Library/Application Support/RelicTracker/config.json` (macOS) and set your `Channel` name
+- The mod will start sending game state automatically on the next run
 
 ## Configuration
 
