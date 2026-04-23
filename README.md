@@ -75,10 +75,12 @@ Game state is POSTed to `{BackendUrl}/api/v2/game-state` as gzip-compressed JSON
 
 ```jsonc
 {
-  "gameStateIndex": 42,        // monotonically increasing counter, resets on new run
-  "channel": "streamer",       // Twitch channel name
+  "runId": "e3b0c442-...",      // UUID generated on run start, unique per attempt
+  "seed": "ABCDEFGH",           // game seed — same seed retried gets a new runId
+  "gameStateIndex": 42,         // monotonically increasing counter, resets on new run
+  "channel": "streamer",        // Twitch channel name
   "game": "sts2",
-  "character": "The Ironclad", // display name
+  "character": "The Ironclad",  // display name
 
   // Relics — display names in acquisition order
   "relics": ["Burning Blood", "Lantern"],
